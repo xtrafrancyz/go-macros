@@ -14,7 +14,11 @@ var fs embed.FS
 var helpTemplateStr string
 var helpTemplate *template.Template
 
+var conf *Config
+
 func main() {
+	conf = loadConfig()
+
 	var err error
 	helpTemplate, err = template.New("help").Parse(helpTemplateStr)
 	if err != nil {

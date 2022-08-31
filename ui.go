@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"strings"
 
 	_ "embed"
 
@@ -64,9 +65,8 @@ func listenHotkeys() {
 	defer robotgo.EventEnd()
 
 	for e := range evChan {
-		// TODO customize key binding
-		if e.Kind == hook.KeyUp && e.Keycode == hook.Keycode["f2"] {
-			fmt.Println("f2 pressed")
+		if e.Kind == hook.KeyUp && e.Keycode == hook.Keycode[conf.Hotkey] {
+			fmt.Println(conf.Hotkey, "pressed")
 			if isRunningMacro.Load().(bool) {
 				fmt.Println("macro running... stopping macro")
 				stopMacros()
@@ -84,6 +84,34 @@ func registerJavascriptFunctions() {
 	ui.Bind("executeCode", executeCode)
 	ui.Bind("stopMacros", stopMacros)
 	ui.Bind("getMousePosition", getMousePosition)
+	ui.Bind("setHotkey", setHotkey)
+	ui.Bind("getHotkey", getHotkey)
+	ui.Bind("getSavedScripts", getSavedScripts)
+	ui.Bind("saveScript", saveScript)
+	ui.Bind("deleteScript", deleteScript)
+}
+
+func setHotkey(key string) {
+	conf.Hotkey = key
+	saveConfig(conf)
+}
+
+func getHotkey() string {
+	return strings.ToUpper(conf.Hotkey)
+}
+
+func getSavedScripts() map[string]string {
+	return conf.SavedScripts
+}
+
+func saveScript(name, code string) {
+	conf.SavedScripts[name] = code
+	saveConfig(conf)
+}
+
+func deleteScript(name string) {
+	delete(conf.SavedScripts, name)
+	saveConfig(conf)
 }
 
 type MousePosition struct {

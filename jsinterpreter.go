@@ -96,7 +96,9 @@ func executeCode(code string) error {
 	fmt.Println("running code...")
 
 	isRunningMacro.Store(true)
+	ui.Eval("onRun()")
 	v, err := jsVM.RunString(code)
+	ui.Eval("onStop()")
 	isRunningMacro.Store(false)
 	if err != nil {
 		if ex, ok := err.(*goja.Exception); ok {
