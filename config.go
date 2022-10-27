@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	Hotkey       string
+	RawHotkey    uint16
 	SavedScripts map[string]string
 }
 

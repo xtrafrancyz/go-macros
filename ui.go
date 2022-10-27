@@ -65,17 +65,32 @@ func listenHotkeys() {
 	defer robotgo.EventEnd()
 
 	for e := range evChan {
-		if e.Kind == hook.KeyUp && e.Keycode == hook.Keycode[conf.Hotkey] {
-			fmt.Println(conf.Hotkey, "pressed")
-			if isRunningMacro.Load().(bool) {
-				fmt.Println("macro running... stopping macro")
-				stopMacros()
-			} else {
-				fmt.Println("nothing running... starting macro")
-				code := ui.Eval("getCode()").String()
-				go executeCode(code)
-			}
+		if e.Kind != hook.KeyUp {
+			continue
 		}
+
+		// raw hotkey code
+		// https://www.toptal.com/developers/keycode
+		if conf.RawHotkey != 0 && e.Rawcode == conf.RawHotkey {
+			hotkeyPressed()
+		}
+
+		// named hotkey
+		if val, ok := hook.Keycode[conf.Hotkey]; ok && val == e.Keycode {
+			hotkeyPressed()
+		}
+	}
+}
+
+func hotkeyPressed() {
+	fmt.Println("hotkey pressed")
+	if isRunningMacro.Load().(bool) {
+		fmt.Println("macro running... stopping macro")
+		stopMacros()
+	} else {
+		fmt.Println("nothing running... starting macro")
+		code := ui.Eval("getCode()").String()
+		go executeCode(code)
 	}
 }
 
