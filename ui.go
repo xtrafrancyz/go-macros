@@ -21,7 +21,7 @@ var ui lorca.UI
 func startUI() error {
 	var err error
 
-	ui, err = lorca.New("", "", 500, 600)
+	ui, err = lorca.New("", "", 500, 600, "--remote-allow-origins=*")
 	if err != nil {
 		return err
 	}
