@@ -52,6 +52,34 @@ func Commands() []automation.Command {
 		},
 		{
 			ModuleName:  moduleName,
+			MethodName:  "leftDown",
+			Parameters:  "",
+			Description: "Press the left mouse button.",
+			Action:      LeftDown,
+		},
+		{
+			ModuleName:  moduleName,
+			MethodName:  "leftUp",
+			Parameters:  "",
+			Description: "Unpress the left mouse button.",
+			Action:      LeftUp,
+		},
+		{
+			ModuleName:  moduleName,
+			MethodName:  "rightDown",
+			Parameters:  "",
+			Description: "Press the left mouse button.",
+			Action:      RightDown,
+		},
+		{
+			ModuleName:  moduleName,
+			MethodName:  "rightUp",
+			Parameters:  "",
+			Description: "Unpress the left mouse button.",
+			Action:      RightUp,
+		},
+		{
+			ModuleName:  moduleName,
 			MethodName:  "drag",
 			Parameters:  "x: int, y: int",
 			Description: "Press the left mouse button on the current position and drag to another position on screen.",
@@ -82,7 +110,7 @@ func Commands() []automation.Command {
 }
 
 func Move(x, y int) {
-	robotgo.MoveMouse(x, y)
+	robotgo.Move(x, y)
 }
 
 func MoveRelative(x, y int) {
@@ -90,7 +118,7 @@ func MoveRelative(x, y int) {
 }
 
 func MoveSmooth(x, y int) {
-	robotgo.MoveMouseSmooth(x, y)
+	robotgo.MoveSmooth(x, y)
 }
 
 func Click() {
@@ -105,18 +133,34 @@ func RightClick() {
 	robotgo.Click("right", false)
 }
 
+func LeftDown() {
+	_ = robotgo.MouseDown("left")
+}
+
+func RightDown() {
+	_ = robotgo.MouseDown("right")
+}
+
+func LeftUp() {
+	_ = robotgo.MouseUp("left")
+}
+
+func RightUp() {
+	_ = robotgo.MouseUp("right")
+}
+
 func GetX() int {
-	x, _ := robotgo.GetMousePos()
+	x, _ := robotgo.Location()
 	return x
 }
 
 func GetY() int {
-	_, y := robotgo.GetMousePos()
+	_, y := robotgo.Location()
 	return y
 }
 
 func Position() (x, y int) {
-	return robotgo.GetMousePos()
+	return robotgo.Location()
 }
 
 func Drag(x, y int) {
