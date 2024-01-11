@@ -26,11 +26,11 @@ func Commands() []automation.Command {
 }
 
 func SaveJpeg(img robotgo.CBitmap, path string) error {
-	return robotgo.SaveJpeg(robotgo.ToImage(robotgo.ToMMBitmapRef(img)), path)
+	return robotgo.SaveJpeg(robotgo.ToImage(img), path)
 }
 
 func SavePng(img robotgo.CBitmap, path string) error {
-	return robotgo.SavePng(robotgo.ToImage(robotgo.ToMMBitmapRef(img)), path)
+	return robotgo.SavePng(robotgo.ToImage(img), path)
 }
 
 // TODO: Adicionar funções de ajuste de HSL, contraste, grayscale, sharpen, etc.

@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-vgo/robotgo"
 	"github.com/haroflow/go-macros/automation"
+	"github.com/vcaesar/bitmap"
 )
 
 func Commands() []automation.Command {
@@ -67,7 +68,7 @@ func Capture() robotgo.CBitmap {
 	// Unfortunately, robotgo.FindBitmap is not working
 	// when converting an image.Image to a MMBitmapRef. I don't know why...
 	// So for now we'll use robotgo.CBitmap and robotgo.CaptureScreen.
-	return robotgo.CBitmap(robotgo.CaptureScreen())
+	return robotgo.CaptureScreen()
 }
 
 func CaptureRect(x, y, w, h int) robotgo.CBitmap {
@@ -75,9 +76,9 @@ func CaptureRect(x, y, w, h int) robotgo.CBitmap {
 	// when converting an image.Image to a MMBitmapRef. I don't know why...
 	// So for now we'll use robotgo.CBitmap and robotgo.CaptureScreen.
 	if w == 0 || h == 0 {
-		return robotgo.CBitmap(robotgo.CaptureScreen())
+		return robotgo.CaptureScreen()
 	}
-	return robotgo.CBitmap(robotgo.CaptureScreen(x, y, w, h))
+	return robotgo.CaptureScreen(x, y, w, h)
 }
 
 func GetPixelColor(x, y int) color.Color {
@@ -105,10 +106,8 @@ func Search(img robotgo.CBitmap, tolerance float64) Point {
 	// Unfortunately, robotgo.FindBitmap is not working
 	// when converting an image.Image to a MMBitmapRef. I don't know why...
 	// So for now we'll use robotgo.CBitmap and robotgo.CaptureScreen.
-	c := robotgo.ToMMBitmapRef(img)
-
 	screen := robotgo.CaptureScreen()
-	x, y := robotgo.FindBitmap(c, screen, tolerance)
+	x, y := bitmap.Find(img, screen, tolerance)
 	return Point{X: x, Y: y}
 }
 
@@ -116,10 +115,8 @@ func SearchAll(img robotgo.CBitmap, tolerance float64) []Point {
 	// Unfortunately, robotgo.FindBitmap is not working
 	// when converting an image.Image to a MMBitmapRef. I don't know why...
 	// So for now we'll use robotgo.CBitmap and robotgo.CaptureScreen.
-	c := robotgo.ToMMBitmapRef(img)
-
 	screen := robotgo.CaptureScreen()
-	points := robotgo.FindEveryBitmap(c, screen, tolerance)
+	points := bitmap.FindAll(img, screen, tolerance)
 
 	ret := make([]Point, len(points))
 	for i, p := range points {

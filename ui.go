@@ -8,7 +8,6 @@ import (
 
 	_ "embed"
 
-	"github.com/go-vgo/robotgo"
 	"github.com/haroflow/go-macros/automation"
 	"github.com/haroflow/go-macros/automation/mouse"
 	hook "github.com/robotn/gohook"
@@ -61,8 +60,8 @@ func helpHandler(rw http.ResponseWriter, r *http.Request) {
 
 // listenHotkeys waits for key presses to determine what macro to run.
 func listenHotkeys() {
-	evChan := robotgo.EventStart()
-	defer robotgo.EventEnd()
+	evChan := hook.Start()
+	defer hook.End()
 
 	for e := range evChan {
 		if e.Kind != hook.KeyUp {

@@ -32,8 +32,8 @@ func Type(msg string) {
 func Press(key string, other ...string) {
 	//https://github.com/go-vgo/robotgo/blob/master/docs/keys.md
 	if len(other) > 0 {
-		robotgo.KeyTap(key, other)
+		_ = robotgo.KeyTap(key, other)
 	} else {
-		robotgo.KeyTap(key)
+		_ = robotgo.KeyTap(key)
 	}
 }

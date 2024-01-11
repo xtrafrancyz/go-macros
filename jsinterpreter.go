@@ -44,7 +44,7 @@ func initJavascriptVM() {
 			return
 		}
 		buf := bytes.Buffer{}
-		img2 := robotgo.ToImage(robotgo.ToMMBitmapRef(img))
+		img2 := robotgo.ToImage(img)
 		err := jpeg.Encode(&buf, img2, nil)
 		if err != nil {
 			logText(fmt.Sprint("cannot encode image to jpeg:", err))
