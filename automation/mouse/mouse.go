@@ -3,6 +3,7 @@ package mouse
 import (
 	"github.com/go-vgo/robotgo"
 	"github.com/haroflow/go-macros/automation"
+	"github.com/haroflow/go-macros/fakerinput"
 )
 
 func Commands() []automation.Command {
@@ -110,11 +111,25 @@ func Commands() []automation.Command {
 }
 
 func Move(x, y int) {
-	robotgo.Move(x, y)
+	if fakerinput.Enabled {
+		r := fakerinput.NewMouseReport()
+		r.X = uint16(x)
+		r.Y = uint16(y)
+		fakerinput.FI.UpdateAbsoluteMouse(r)
+	} else {
+		robotgo.Move(x, y)
+	}
 }
 
 func MoveRelative(x, y int) {
-	robotgo.MoveRelative(x, y)
+	if fakerinput.Enabled {
+		r := fakerinput.NewMouseReport()
+		r.X = uint16(x)
+		r.Y = uint16(y)
+		fakerinput.FI.UpdateRelativeMouse(r)
+	} else {
+		robotgo.MoveRelative(x, y)
+	}
 }
 
 func MoveSmooth(x, y int) {
@@ -122,7 +137,17 @@ func MoveSmooth(x, y int) {
 }
 
 func Click() {
-	robotgo.Click("left", false)
+	if fakerinput.Enabled {
+		r := fakerinput.NewMouseReport()
+		r.ButtonDown(fakerinput.MouseLeft)
+		fakerinput.FI.UpdateAbsoluteMouse(r)
+		robotgo.MilliSleep(3)
+		r = fakerinput.NewMouseReport()
+		r.ButtonUp(fakerinput.MouseLeft)
+		fakerinput.FI.UpdateAbsoluteMouse(r)
+	} else {
+		robotgo.Click("left", false)
+	}
 }
 
 func DoubleClick() {
@@ -130,23 +155,57 @@ func DoubleClick() {
 }
 
 func RightClick() {
-	robotgo.Click("right", false)
+	if fakerinput.Enabled {
+		r := fakerinput.NewMouseReport()
+		r.ButtonDown(fakerinput.MouseRight)
+		fakerinput.FI.UpdateAbsoluteMouse(r)
+		robotgo.MilliSleep(3)
+		r = fakerinput.NewMouseReport()
+		r.ButtonUp(fakerinput.MouseRight)
+		fakerinput.FI.UpdateAbsoluteMouse(r)
+	} else {
+		robotgo.Click("right", false)
+	}
 }
 
 func LeftDown() {
-	_ = robotgo.MouseDown("left")
+	if fakerinput.Enabled {
+		r := fakerinput.NewMouseReport()
+		r.ButtonDown(fakerinput.MouseLeft)
+		fakerinput.FI.UpdateAbsoluteMouse(r)
+	} else {
+		_ = robotgo.MouseDown("left")
+	}
 }
 
 func RightDown() {
-	_ = robotgo.MouseDown("right")
+	if fakerinput.Enabled {
+		r := fakerinput.NewMouseReport()
+		r.ButtonDown(fakerinput.MouseRight)
+		fakerinput.FI.UpdateAbsoluteMouse(r)
+	} else {
+		_ = robotgo.MouseDown("right")
+	}
 }
 
 func LeftUp() {
-	_ = robotgo.MouseUp("left")
+	if fakerinput.Enabled {
+		r := fakerinput.NewMouseReport()
+		r.ButtonUp(fakerinput.MouseLeft)
+		fakerinput.FI.UpdateAbsoluteMouse(r)
+	} else {
+		_ = robotgo.MouseUp("left")
+	}
 }
 
 func RightUp() {
-	_ = robotgo.MouseUp("right")
+	if fakerinput.Enabled {
+		r := fakerinput.NewMouseReport()
+		r.ButtonUp(fakerinput.MouseRight)
+		fakerinput.FI.UpdateAbsoluteMouse(r)
+	} else {
+		_ = robotgo.MouseUp("right")
+	}
 }
 
 func GetX() int {

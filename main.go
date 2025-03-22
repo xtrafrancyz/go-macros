@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"fmt"
+	"github.com/haroflow/go-macros/fakerinput"
 	"html/template"
 	"os"
 )
@@ -18,6 +19,10 @@ var conf *Config
 
 func main() {
 	conf = loadConfig()
+
+	if conf.FakerInput {
+		defer fakerinput.InitGlobal().Close()
+	}
 
 	var err error
 	helpTemplate, err = template.New("help").Parse(helpTemplateStr)

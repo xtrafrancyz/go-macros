@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Hotkey       string
 	RawHotkey    uint16
+	FakerInput   bool
 	SavedScripts map[string]string
 }
 
