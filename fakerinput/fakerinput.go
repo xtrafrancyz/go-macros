@@ -1,6 +1,6 @@
 package fakerinput
 
-// #cgo LDFLAGS: -L./ -lFakerInputDll
+// #cgo LDFLAGS: -L../ -lFakerInputDll
 // #include <stdlib.h>
 // #include <stdbool.h>
 //
